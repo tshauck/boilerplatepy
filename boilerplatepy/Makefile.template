@@ -11,7 +11,13 @@ SRC_ROOT={{repository}}/{{namespace}}/{{project}}/
 
 .DEFAULT_GOAL := build
 
-build/container: build/Dockerfile
-	@echo "${LIGHT_GREEN}building docker image: {{namespace}}/{{project}}${NC}"
-	@docker build --no-cache -t {{namespace}}/{{project}} build/ > /dev/null
-	touch $@
+#build/container: build/Dockerfile
+	#@echo "${LIGHT_GREEN}building docker image: {{namespace}}/{{project}}${NC}"
+	#@docker build --no-cache -t {{namespace}}/{{project}} build/ > /dev/null
+	#touch $@
+
+build:
+	docker build -t {{namespace}}/{{project}} .
+
+run:
+	docker run -it {{namespace}}/{{project}}

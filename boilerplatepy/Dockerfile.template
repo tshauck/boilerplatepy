@@ -1,1 +1,15 @@
-FROM google/python
+FROM python:2.7
+
+WORKDIR /{{project}}
+
+RUN virtualenv /env
+
+ADD requirements.txt /{{project}}/requirements.txt
+
+RUN pip install -r requirements.txt
+
+ADD . /{{project}}
+
+RUN pip install -e .
+
+ENTRYPOINT ["{{project}}"]

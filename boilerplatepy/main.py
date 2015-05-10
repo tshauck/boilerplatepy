@@ -59,11 +59,15 @@ if __name__ == '__main__':
     deploy_scaffold(args["project"])
 
     assets = {
+        # admin
         "Makefile.template": os.path.join(args["project"], "Makefile"),
         "Dockerfile.template": os.path.join(args["project"], "Dockerfile"),
         "setup.py.template": os.path.join(args["project"], "setup.py"),
+        "requirements.txt.template": os.path.join(args["project"], "requirements.txt"),
+
+        # package
         "main.py.template": os.path.join(args["project"], args["project"], "main.py"),
-        "__init__.py.template": os.path.join(args["project"], args["project"], "__init__.py")
+        "__init__.py.template": os.path.join(args["project"], args["project"], "__init__.py"),
     }
 
     for asset, save_location in assets.items():
