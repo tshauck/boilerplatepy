@@ -1,0 +1,15 @@
+from setuptools import setup, find_packages
+
+NAME = '{{project}}'
+
+ENTRY_POINTS = {
+    'console_scripts': [
+        '{{project}} = {{project}}.main:main'
+    ]
+}
+
+setup(
+    name=NAME,
+    entry_points=ENTRY_POINTS,
+    packages=find_packages(),
+)

@@ -1,0 +1,17 @@
+SHELL := /bin/bash
+
+LIGHT_GREEN := $(shell echo -e "\033[1;32m")
+NC := $(shell echo -e "\033[0m") # No Color
+
+GIT_SHA:= $(shell git rev-parse HEAD 2>/dev/null | cut -c 1-7)
+
+DOCKER_USER := $(shell if [[ "$$OSTYPE" != "darwin"* ]]; then USER_ARG="--user=`id -u`"; fi; echo "$$USER_ARG")
+
+SRC_ROOT={{repository}}/{{namespace}}/{{project}}/
+
+.DEFAULT_GOAL := build
+
+build/container: build/Dockerfile
+	@echo "${LIGHT_GREEN}building docker image: {{namespace}}/{{project}}${NC}"
+	@docker build --no-cache -t {{namespace}}/{{project}} build/ > /dev/null
+	touch $@

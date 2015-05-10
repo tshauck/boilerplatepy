@@ -1,0 +1,9 @@
+from __future__ import print_function
+
+import {{project}}
+
+def main():
+    print("In {{repository}}/{{namespace}}/{{project}}")
+
+if __name__ == "__main__":
+    main()
