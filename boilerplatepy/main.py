@@ -4,6 +4,16 @@ import os
 import errno
 import glob
 
+def _relative_path(rel_path):
+    """Return the absolute path given a relative path, rel_path.
+
+    Args:
+        rel_path (str): The relative path.
+    """
+
+    file_directory = os.path.dirname(__file__)
+    return os.path.join(file_directory, rel_path)
+
 def deploy_scaffold(project, root='.'):
     """Create the directory structure for the project.
 
@@ -41,13 +51,14 @@ def write_template(template_location, template_destination, template_args):
         template_args (dict): The arguments to fill the template with.
     """
 
-    with open(template_location) as input_temp, open(template_destination, "w+") as out_temp:
+    full_location = _relative_path(os.path.join("./templates/", template_location))
+
+    with open(full_location) as input_temp, open(template_destination, "w+") as out_temp:
         template_text = input_temp.read()
         filled_text = fill_template(template_text, template_args)
         out_temp.write(filled_text)
 
-if __name__ == '__main__':
-
+def main():
     parser = argparse.ArgumentParser(description='Create a boilerplate for a python project')
 
     parser.add_argument('-repository', type=str, help='The name of the repository')
@@ -72,3 +83,6 @@ if __name__ == '__main__':
 
     for asset, save_location in assets.items():
         write_template(asset, save_location, args)
+
+if __name__ == '__main__':
+    main()
