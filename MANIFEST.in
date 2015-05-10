@@ -1,1 +1,2 @@
 include boilerplatepy/templates
+include boilerplatepy/templates/build

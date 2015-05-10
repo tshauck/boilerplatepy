@@ -1,7 +1,6 @@
 from jinja2 import Template
 import argparse
 import os
-import errno
 import glob
 
 def _relative_path(rel_path):
@@ -24,7 +23,8 @@ def deploy_scaffold(project, root='.'):
 
     directory_structure = [
         os.path.join(root, project),
-        os.path.join(root, project, project)
+        os.path.join(root, project, project),
+        os.path.join(root, project, "build"),
     ]
 
     for directory in directory_structure:
@@ -35,6 +35,10 @@ def fill_template(template_text, template_args):
     """Takes the Jinja2 template from template_text and fills it
     with the arguments from template_args
 
+    Args:
+        template_text (str): The raw template text.
+        template_args (dict): A dictionary mapping template keys
+            to values.
     """
 
     template = Template(template_text)
@@ -79,6 +83,8 @@ def main():
         # package
         "main.py.template": os.path.join(args["project"], args["project"], "main.py"),
         "__init__.py.template": os.path.join(args["project"], args["project"], "__init__.py"),
+        "__init__.py.template": os.path.join(args["project"], args["project"], "__init__.py"),
+        "build/Dockerfile.template": os.path.join(args["project"], "build", "Dockerfile"),
     }
 
     for asset, save_location in assets.items():
