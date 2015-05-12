@@ -1,17 +1,3 @@
 FROM python:2.7
 
-WORKDIR /{{project}}
-
-RUN virtualenv /env
-
-ADD requirements.txt /{{project}}/requirements.txt
-
-RUN pip install wheel
-
-ADD . /{{project}}
-
-RUN pip wheel \
-    --wheel-dir /wheelhouse \
-    --requirement requirements.txt
-
-CMD ["python", "setup.py", "bdist_wheel"]
+RUN pip install wheel pylint

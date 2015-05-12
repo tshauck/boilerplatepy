@@ -1,15 +1,5 @@
 FROM python:2.7
 
-WORKDIR /{{project}}
-
-RUN virtualenv /env
-
-ADD requirements.txt /{{project}}/requirements.txt
-
-RUN pip install -r requirements.txt
-
-ADD . /{{project}}
-
-RUN pip install -e .
+CMD ["sh", "-c", "pip install --find-links ./wheelhouse dist/$(ls -t dist | head -1)"]
 
 ENTRYPOINT ["{{project}}"]

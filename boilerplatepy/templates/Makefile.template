@@ -5,8 +5,6 @@ NC := $(shell echo -e "\033[0m") # No Color
 
 GIT_SHA:= $(shell git rev-parse HEAD 2>/dev/null | cut -c 1-7)
 
-DOCKER_USER := $(shell if [[ "$$OSTYPE" != "darwin"* ]]; then USER_ARG="--user=`id -u`"; fi; echo "$$USER_ARG")
-
 .DEFAULT_GOAL := build
 
 build/container: build/Dockerfile
@@ -14,10 +12,40 @@ build/container: build/Dockerfile
 	@docker build --no-cache -t {{namespace}}/{{project}}-builder build/ > /dev/null
 	touch $@
 
-{{project}}: build/container
-	@echo "${LIGHT_GREEN}building wheels for {{project}} and its dependencies${NC}"
+deps: build/container
+	@echo "${LIGHT_GREEN}building wheels for {{project}}'s dependecies${NC}"
 	@docker run --rm \
-	    -t {{namespace}}/{{project}}-builder
-	    -v "$${PWD}/wheelhouse":"/wheelhouse"
+	    -v ${PWD}:/{{project}} \
+	    -w /{{project}} \
+	    -t {{namespace}}/{{project}}-builder \
+	    pip wheel -r requirements.txt
+
+{{project}}: deps build/container
+	@echo "${LIGHT_GREEN}building a wheel for {{project}}, and wheels for its dependecies${NC}"
+	@docker run --rm \
+            -v ${PWD}:/{{project}} \
+            -w /{{project}} \
+            -t {{namespace}}/{{project}}-builder \
+            python setup.py bdist_wheel
 
 build: {{project}}
+
+test: build/container
+	@echo "${LIGHT_GREEN}running tests for {{project}}${NC}"
+	@docker run --rm \
+            -v ${PWD}:/{{project}} \
+            -w /{{project}} \
+            -t {{namespace}}/{{project}}-builder \
+            python setup.py test
+
+lint: build/container
+	@echo "${LIGHT_GREEN}linting {{project}}${NC}"
+	@docker run --rm \
+            -v ${PWD}:/{{project}} \
+            -w /{{project}} \
+            -t {{namespace}}/{{project}}-builder \
+            pylint -f colorized {{project}}
+
+dockerize: build
+	@docker build --no-cache \
+	    -t "{{namespace}}/{{project}}:${GIT_SHA}" ${PWD}

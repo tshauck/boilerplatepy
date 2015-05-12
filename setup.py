@@ -8,7 +8,7 @@ ENTRY_POINTS = {
 
 setup(
     name="boilerplatepy",
-    install_requires=["Jinja2", "requests", "platter"],
+    install_requires=["Jinja2", "requests"],
     packages=["boilerplatepy"],
     entry_points=ENTRY_POINTS,
 )
