@@ -21,7 +21,7 @@ deps: build/container
 	    pip wheel -r requirements.txt
 
 {{project}}: deps build/container
-	-rm -rf dist/
+	-@rm -rf dist/
 	@echo "${LIGHT_GREEN}building a wheel for {{project}}, and wheels for its dependecies${NC}"
 	@docker run --rm \
             -v ${PWD}:/{{project}} \
