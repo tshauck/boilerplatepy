@@ -1,5 +1,8 @@
 FROM python:2.7
 
-CMD ["sh", "-c", "pip install --find-links ./wheelhouse dist/$(ls -t dist | head -1)"]
+ADD ./wheelhouse /wheelhouse
+ADD ./dist/ /dist/
+
+RUN pip install --find-links /wheelhouse /dist/*.whl
 
 ENTRYPOINT ["{{project}}"]
