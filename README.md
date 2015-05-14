@@ -2,7 +2,7 @@
 
 > :hotsprings: :snake:
 
-[Boilerplate](https://github.com/zulily/boilerplate/master/README.md),
+[Boilerplate](https://github.com/zulily/boilerplate/),
 the inspiration for Boilerplatepy, is a simple tool to facilitate
 building and running go programs.
 
@@ -19,12 +19,21 @@ The concepts as explained by the README.md:
   zulily)_
 > * `project`: the name of the binary _(e.g. fizzbuzz)_
 
-Boilerplatepy, unlike Boilerplate, cannot give guarantees of a static binary.
+Boilerplatepy, unlike Boilerplate, cannot build a static binary and give you
+utmost confidence that your executable will run on a compatable platform.
+
 But, it can give you a fair amount of confidence that you'll be able to
-develop, run, and test against a deployable environment from your development
+quickly develop, run, and test against a deployable environment from your development
 machine.
 
+It is also probably not suitable as a basis for open source packages as it
+is intented work within the constraint of a single target platform.
+
 ## Quick Start
+
+Install:
+
+    $ pip install boilerplatepy
 
 Given the inputs:
 
